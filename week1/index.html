@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第一週任務：RWD網頁切版</title>
+    <link rel="stylesheet" type="text/css" href="rwd_homepage.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-title">My Website</div>
+            <ul class="navbar-menu">
+                <li>Item 1</li>
+                <li>Item 2</li>
+                <li>Item 3</li>
+                <li>Item 4</li>
+            </ul>
+            <div class="burger-icon" onclick="openMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <span class="close-icon" onclick="closeMenu()">✕</span>
+        </div>
+        <ul class="mobile-menu-items">
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+            <li>Item 4</li>
+        </ul>
+    </div>
+
+    <!-- welcome Section -->
+    <div class="welcome">
+        <div class="sub-title">Welcome to MyHome</div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Bars -->
+        <div class="desktop-layout">
+            <div class="bars">
+            <div class="bars-row">
+                <div class="bar">
+                    <img src="view.jpg" alt="Mountain">
+                    <div class="bar-text">Promotion 1</div>
+                </div>
+            </div>
+            <div class="bars-row">
+                <div class="bar">
+                    <img src="view.jpg" alt="Mountain">
+                    <div class="bar-text">Promotion 2</div>
+                </div>
+                <div class="bar">
+                    <img src="view.jpg" alt="Mountain">
+                    <div class="bar-text">Promotion 3</div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="tablet-layout">
+            <div class="bars">
+            <div class="bars-row">
+                <div class="bar">
+                    <img src="view.jpg" alt="Mountain">
+                    <div class="bar-text">Promotion 1</div>
+                </div>
+                <div class="bar">
+                    <img src="view.jpg" alt="Mountain">
+                    <div class="bar-text">Promotion 2</div>
+                </div>
+            </div>
+            <div class="bars-row">
+                
+                <div class="bar">
+                    <img src="view.jpg" alt="Mountain">
+                    <div class="bar-text">Promotion 3</div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <!-- Content Blocks -->
+        <div class="content-blocks">
+            <div class="content-block">
+                <img src="view.jpg" alt="Mountain landscape">
+                <span class="star-icon">★</span>
+                <div class="block-title">Title 1</div>
+            </div>
+            <div class="content-block">
+                <img src="view.jpg" alt="Mountain landscape">
+                <span class="star-icon">★</span>
+                <div class="block-title">Title 2</div>
+            </div>
+            <div class="content-block">
+                <img src="view.jpg" alt="Mountain landscape">
+                <span class="star-icon">★</span>
+                <div class="block-title">Title 3</div>
+            </div>
+            <div class="content-block">
+                <img src="view.jpg" alt="Mountain landscape">
+                <span class="star-icon">★</span>
+                <div class="block-title">Title 4</div>
+            </div>
+            <div class="content-block">
+                <img src="view.jpg" alt="Mountain landscape">
+                <span class="star-icon">★</span>
+                <div class="block-title">Title 5</div>
+            </div>
+            <div class="content-block">
+                <img src="view.jpg" alt="Mountain landscape">
+                <span class="star-icon">★</span>
+                <div class="block-title">Title 6</div>
+            </div>
+            <div class="content-block">
+                <img src="view.jpg" alt="Mountain landscape">
+                <span class="star-icon">★</span>
+                <div class="block-title">Title 7</div>
+            </div>
+            <div class="content-block">
+                <img src="view.jpg" alt="Mountain landscape">
+                <span class="star-icon">★</span>
+                <div class="block-title">Title 8</div>
+            </div>
+            <div class="content-block">
+                <img src="view.jpg" alt="Mountain landscape">
+                <span class="star-icon">★</span>
+                <div class="block-title">Title 9</div>
+            </div>
+            <div class="content-block">
+                <img src="view.jpg" alt="Mountain landscape">
+                <span class="star-icon">★</span>
+                <div class="block-title">Title 10</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function openMenu() {
+            document.getElementById('mobileMenu').classList.add('active');
+        }
+
+        function closeMenu() {
+            document.getElementById('mobileMenu').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
