@@ -1,1 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attractions in Taipei</title>
+    <link rel="stylesheet" type="text/css" href="week3-task3.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-title">My Website</div>
+            <ul class="navbar-menu">
+                <li>Item 1</li>
+                <li>Item 2</li>
+                <li>Item 3</li>
+                <li>Item 4</li>
+            </ul>
+            <div class="burger-icon" onclick="openMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <span class="close-icon" onclick="closeMenu()">✕</span>
+        </div>
+        <ul class="mobile-menu-items">
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+            <li>Item 4</li>
+        </ul>
+    </div>
+
+    <!-- welcome Section -->
+    <div class="welcome">
+        <div class="sub-title">Welcome to MyHome</div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="desktop-layout">
+            <div class="bars" id="desktopBars">
+            </div>
+        </div>
+        <div class="tablet-layout">
+            <div class="bars" id="tabletBars">
+            </div>
+        </div>
+
+        <!-- Content Blocks -->
+        <div class="content-blocks" id="contentBlocks">
+        </div>
+    </main>
+    <script>
+        // 頁面載入完成後自動執行
+        window.addEventListener('load', function () {
+            getData();
+        });
+        function openMenu() {
+            document.getElementById('mobileMenu').classList.add('active');
+        }
+        function closeMenu() {
+            document.getElementById('mobileMenu').classList.remove('active');
+        }
+
+        function getData() {
+            // 使用Promise.all同時取得兩個URL的資料
+            Promise.all([
+                fetch("https://cwpeng.github.io/test/assignment-3-1").then(response => response.json()),
+                fetch("https://cwpeng.github.io/test/assignment-3-2").then(response => response.json())
+            ]).then(function (results) {
+                let data1 = results[0].rows || [];
+                let data2 = results[1].rows || [];
+                // 建立一個Map來快速查找圖片資料
+                let picturesMap = new Map();
+                for (let i = 0; i < data2.length; i++) {
+                    picturesMap.set(data2[i].serial, data2[i].pics);
+                }
+                // 合併資料為每個景點加入對應的圖片
+                let allAttractions = [];
+                for (let i = 0; i < data1.length; i++) {
+                    let attraction = data1[i];
+                    let pics = picturesMap.get(attraction.serial);
+                    // 將圖片字串分割成陣列
+                    let imagesArray = [];
+                    if (pics) {
+                        // 先將字串按.jpg分割，然後為每個項目加回.jpg
+                        let parts = pics.split('.jpg');
+                        for (let j = 0; j < parts.length; j++) {
+                            let part = parts[j].trim();
+                            if (part !== '') {        
+                                if (part.startsWith('/')) {
+                                    part = part.substring(1);
+                                }                                
+                                let fullUrl = 'https://www.travel.taipei/' + part + '.jpg';
+                                imagesArray.push(fullUrl);
+                            }
+                        }
+                    }
+
+                    // 建立新的景點物件
+                    allAttractions.push({
+                        name: attraction.sname,
+                        serial: attraction.serial,
+                        images: imagesArray,
+                        address: attraction.address,
+                        info: attraction.info
+                    });
+                }         
+                // 取得前3個景點放在 bars
+                let barsAttractions = allAttractions.slice(0, 3);
+                // 取得第4-13個景點放在content blocks
+                let contentAttractions = allAttractions.slice(3, 13);
+                // 渲染bars區域（桌面版）
+                renderDesktopBars(barsAttractions);
+                // 渲染bars區域（平板版）
+                renderTabletBars(barsAttractions);
+                // 渲染content blocks
+                renderContentBlocks(contentAttractions);
+            }).catch(function (error) {
+                console.error('Error fetching data:', error);
+            });
+        }
+
+        // 渲染桌面版bars
+        function renderDesktopBars(attractions) {
+            let desktopBars = document.getElementById('desktopBars');        
+            desktopBars.textContent = '';
+            // 第一個景點
+            if (attractions[0]) {
+                let row1 = document.createElement('div');
+                row1.className = 'bars-row';
+
+                let bar1 = createBarElement(attractions[0]);
+                row1.appendChild(bar1);
+                desktopBars.appendChild(row1);
+            }
+            // 第二、三個景點
+            if (attractions[1] || attractions[2]) {
+                let row2 = document.createElement('div');
+                row2.className = 'bars-row';
+                if (attractions[1]) {
+                    let bar2 = createBarElement(attractions[1]);
+                    row2.appendChild(bar2);                }
+
+                if (attractions[2]) {
+                    let bar3 = createBarElement(attractions[2]);
+                    row2.appendChild(bar3);
+                }
+                desktopBars.appendChild(row2);
+            }
+        }
+
+        // 渲染平板版 bars
+        function renderTabletBars(attractions) {
+            let tabletBars = document.getElementById('tabletBars');            
+            tabletBars.textContent = '';
+            // 第一、二個景點
+            if (attractions[0] || attractions[1]) {
+                let row1 = document.createElement('div');
+                row1.className = 'bars-row';
+                if (attractions[0]) {
+                    let bar1 = createBarElement(attractions[0]);
+                    row1.appendChild(bar1);                }
+                if (attractions[1]) {
+                    let bar2 = createBarElement(attractions[1]);
+                    row1.appendChild(bar2);                }
+                tabletBars.appendChild(row1);
+            }
+
+            // 第三個景點
+            if (attractions[2]) {
+                let row2 = document.createElement('div');
+                row2.className = 'bars-row';
+                let bar3 = createBarElement(attractions[2]);
+                row2.appendChild(bar3);
+                tabletBars.appendChild(row2);
+            }
+        }
+
+        // 建立單個bar元素
+        function createBarElement(attraction) {
+            let bar = document.createElement('div');
+            bar.className = 'bar';
+            // 建立圖片元素
+            let img = document.createElement('img');
+            // 取得第一張圖片的URL
+            if (attraction.images && attraction.images.length > 0) {
+                img.src = attraction.images[0];
+            } else {
+                img.src = 'view.jpg';
+            }
+            img.alt = attraction.name || 'Attraction';            
+            let barText = document.createElement('div');
+            barText.className = 'bar-text';
+            barText.textContent = attraction.name || 'Unknown';            
+            bar.appendChild(img);
+            bar.appendChild(barText);
+            return bar;
+        }
+
+        // 渲染content blocks
+        function renderContentBlocks(attractions) {
+            let contentBlocks = document.getElementById('contentBlocks');            
+            contentBlocks.textContent = '';
+            // 為每個景點建立content block
+            for (let i = 0; i < attractions.length; i++) {
+                let block = createContentBlockElement(attractions[i]);
+                contentBlocks.appendChild(block);
+            }
+        }
+
+        // 建立單個content block元素
+        function createContentBlockElement(attraction) {
+            let block = document.createElement('div');
+            block.className = 'content-block';            
+            let img = document.createElement('img');
+            if (attraction.images && attraction.images.length > 0) {
+                img.src = attraction.images[0];
+            } else {
+                img.src = 'view.jpg';
+            }
+            img.alt = attraction.name || 'Attraction';
+            // 建立星星圖示
+            let star = document.createElement('span');
+            star.className = 'star-icon';
+            star.textContent = '★';
+            // 建立標題
+            let title = document.createElement('div');
+            title.className = 'block-title';
+            title.textContent = attraction.name || 'Unknown';
+            // 組裝元素
+            block.appendChild(img);
+            block.appendChild(star);
+            block.appendChild(title);
+            return block;
+        }
+    </script>
+</body>
+</html>
