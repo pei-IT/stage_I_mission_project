@@ -94,33 +94,11 @@ body {
     color: #333;
 }
 
-
 .button-group{
     display: flex;
     justify-content: center; 
     align-items: center;
 }
-
-/* .submit-btn {
-
-    width: 100%;
-    padding: 12px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s; 
-}*/
-
-/* .submit-btn:hover {
-    background-color: #2980b9;
-} */
-
-/* .submit-btn:active {
-    background-color: #21618c;
-} */
 
 hr {
     margin: 40px auto;
