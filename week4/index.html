@@ -26,11 +26,14 @@
             </div>
             
             <div class="checkbox-group">
-                <input type="checkbox" id="agreeCheckbox" name="agree">
+                <div class="agreeCheckbox-group">
                 <label for="agreeCheckbox">同意條款</label>
+                </div>
+                <input type="checkbox" id="agreeCheckbox" name="agree">
             </div>
-            
-            <button type="submit" class="submit-btn">登入</button>
+            <div class="button-group">
+                <button type="submit" class="submit-btn">登入</button>
+            </div>
         </form>
     </div>
 
@@ -43,8 +46,9 @@
             <label for="hotelId">編號</label>
             <input type="text" id="hotelId" name="hotelId">
         </div>
-        
-        <button type="button" class="submit-btn" onclick="getHotelInfo()">取得</button>
+        <div class="button-group">
+            <button type="button" class="submit-btn" onclick="getHotelInfo()">取得</button>
+        </div>
     </div>
     
     <script>
@@ -56,40 +60,35 @@
         
         form.addEventListener('submit', function(event) {
             // 阻止表單預設提交行為
-            event.preventDefault();
-            
+            event.preventDefault();            
             // 檢查 checkbox 是否被勾選
             if (!checkbox.checked) {
                 alert('請勾選同意條款');
                 return;
-            }
-            
+            }            
             // 允許表單提交到後端（後端會檢查空值）
             form.submit();
         });
 
         // 取得旅館資訊
         function getHotelInfo() {
-            const hotelId = document.getElementById('hotelId').value.trim();
-            
+            const hotelId = document.getElementById('hotelId').value.trim();            
             // 檢查是否為空
             if (!hotelId) {
                 alert('請輸入正整數');
                 return;
-            }
-            
+            }            
             // 檢查是否為正整數
             const id = Number(hotelId);
             if (!Number.isInteger(id) || id <= 0) {
                 alert('請輸入正整數');
                 return;
-            }
-            
+            }            
             // 重定向到旅館頁面
             window.location.href = `/hotel/${id}`;
         }
 
-        // 允許按 Enter 鍵提交旅館查詢
+        // 允許按enter鍵提交旅館查詢
         document.getElementById('hotelId').addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 getHotelInfo();

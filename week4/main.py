@@ -7,7 +7,7 @@ import httpx
 
 app = FastAPI()
 
-app.add_middleware(SessionMiddleware, secret_key="your-secret-key-here-change-this-in-production")
+app.add_middleware(SessionMiddleware, secret_key="1qaz2wsx")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
@@ -39,36 +39,26 @@ async def error_page(request: Request, msg: str = ""):
         context={"msg": msg}
     )
 
+#登入驗證端點
 @app.post("/login")
 async def login(request: Request, email: str = Form(""), password: str = Form("")):
-    """
-    登入驗證端點
-    注意：使用 Form("") 而不是 Form(...) 來允許空值
-    """
     # 去除前後空白
     email = email.strip()
-    password = password.strip()
-    
-    print(f"收到登入請求 - Email: '{email}', Password: '{password}'")
-    
-    # 檢查是否為空（優先檢查）
-    if not email or not password:
-        print("信箱或密碼為空，重定向到錯誤頁面")
+    password = password.strip()       
+    # 檢查是否為空
+    if not email or not password:        
         return RedirectResponse(
             url="/ohoh?msg=請輸入信箱和密碼",
             status_code=303
-        )
-    
+        )    
     # 驗證帳號密碼
-    if email == "abc@abc.com" and password == "abc":
-        print("登入成功")
+    if email == "abc@abc.com" and password == "abc":        
         request.session["LOGGED-IN"] = True
         return RedirectResponse(
             url="/member",
             status_code=303
         )
-    else:
-        print("帳號或密碼錯誤")
+    else:        
         return RedirectResponse(
             url="/ohoh?msg=信箱或密碼輸入錯誤",
             status_code=303
@@ -94,8 +84,7 @@ async def hotel_page(request: Request, hotel_id: int):
             hotels_en = data_en.get("list", [])                
             # 尋找對應的旅館
             hotel_ch = None
-            hotel_en = None
-            
+            hotel_en = None            
             for h in hotels_ch:
                 h_id = h.get("_id")
                 try:

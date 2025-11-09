@@ -75,6 +75,11 @@ body {
     justify-content: center;
 }
 
+.agreeCheckbox-group{
+    margin-right: 10px;
+    
+}
+
 .checkbox-group input[type="checkbox"] {
     margin-right: 8px;
     width: 18px;
@@ -85,11 +90,19 @@ body {
 .checkbox-group label {
     cursor: pointer;
     user-select: none;
-    font-size: 16px;
+    font-size: 18px;
     color: #333;
 }
 
-.submit-btn {
+
+.button-group{
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+/* .submit-btn {
+
     width: 100%;
     padding: 12px;
     background-color: #3498db;
@@ -98,16 +111,16 @@ body {
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s;
-}
+    transition: background-color 0.3s; 
+}*/
 
-.submit-btn:hover {
+/* .submit-btn:hover {
     background-color: #2980b9;
-}
+} */
 
-.submit-btn:active {
+/* .submit-btn:active {
     background-color: #21618c;
-}
+} */
 
 hr {
     margin: 40px auto;
