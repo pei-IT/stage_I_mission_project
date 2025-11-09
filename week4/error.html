@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失敗頁面</title>
+    <link href="{{ url_for('static', path='/styles-error.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        失敗頁面
+    </div>
+    <div class="container">
+        <div class="error-message">
+            {% if msg %}
+                {{ msg }}
+            {% else %}
+                帳號、或密碼輸入錯誤
+            {% endif %}
+        </div>
+        <div class="back-link">
+            <a href="/">返回首頁</a>
+        </div>
+    </div>
+</body>
+</html>
