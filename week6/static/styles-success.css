@@ -1,0 +1,186 @@
+
+ * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, "微軟正黑體", sans-serif;
+    background-color: white;
+}
+
+.welcome {
+    background-color: #2c5472;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;    
+    border-radius: 5px;    
+}
+
+.title {
+    font-size: 18px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.member-name {
+    color: #000;    
+}
+
+.logout {
+    text-align: center;
+    padding-left: 20px;
+    margin-bottom: 30px;
+}
+
+.logout a {
+    color: #2c5472;
+    text-decoration: underline;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.logout a:hover {
+    color: #1a3a4f;
+}
+
+/* 留言表單樣式 */
+#messageForm {
+    border-top: 1px solid #ddd;
+    padding-top: 30px;
+    margin-bottom: 30px;
+}
+
+.form-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+label {
+    width: 45px;
+    font-size: 16px;
+    font-weight: normal;
+    flex-shrink: 0;
+}
+
+input[type="text"] {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #2c5472;
+}
+
+.button-group {
+    text-align: center;
+    margin-top: 25px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+}
+
+.submit-btn {
+    background-color: white;
+    color: black;
+    border: 2px solid #333;
+    padding: 10px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #f0f0f0;
+}
+
+/* 留言顯示區域樣式 */
+.messages-section {
+    margin-top: 30px;
+}
+
+.message-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 3px;
+    border-left: 3px solid #2c5472;
+    position: relative;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.message-author {
+    font-weight: bold;
+    color: #2c5472;
+    font-size: 16px;
+}
+
+.message-content {
+    color: #333;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.message-line {    
+    text-align: center;
+    font-size: 16px;
+    color: #000;
+    margin: 8px 0;
+    line-height: 1.6;
+}
+
+/* 刪除按鈕樣式 */
+.delete-form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.delete-btn {
+    margin-left: 6px;
+    width: 22px;
+    height: 22px;
+    border: 1px solid #777;
+    background: #fff;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    padding: 0;
+}
+
+.delete-btn:hover {
+    background: #f0f0f0;
+}
