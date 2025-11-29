@@ -32,8 +32,7 @@ def get_db_connection():
             user="root",
             password="12345678",
             database="website"
-        )
-        print("資料庫連接成功")
+        )                        
         return connection
     except Error as e:
         print(f"資料庫連接錯誤: {e}")
@@ -57,9 +56,7 @@ async def member_page(request: Request):
     # 取得會員資訊
     member_id = request.session.get("member_id", "")
     member_name = request.session.get("member_name", "")
-    member_email = request.session.get("member_email", "")
-    
-    print(f"會員頁面載入: {member_name} (ID: {member_id})")
+    member_email = request.session.get("member_email", "")     
     
     # 渲染success.html
     return templates.TemplateResponse(
@@ -90,8 +87,7 @@ async def update_member_name(request: Request, name_data: NameUpdateRequest):
     new_name = name_data.name.strip()
     
     # 驗證姓名不為空
-    if not new_name:
-        print("姓名不能為空")
+    if not new_name:        
         return {"error": True}
     
     # 連接資料庫
@@ -112,8 +108,7 @@ async def update_member_name(request: Request, name_data: NameUpdateRequest):
         # 檢查是否有更新任何記錄
         if cursor.rowcount > 0:
             # 更新 Session 中的姓名
-            request.session["member_name"] = new_name
-            print(f"更新成功: 會員 ID {member_id} 的姓名更新為 {new_name}")
+            request.session["member_name"] = new_name           
             return {"ok": True}
         else:
             print(f"更新失敗: 找不到會員 ID {member_id}")
@@ -167,9 +162,8 @@ async def get_member_querylogs(request: Request):
                 formatted_logs.append({
                     "name": log["name"],
                     "time": log["time"].strftime("%Y-%m-%d %H:%M:%S")
-                })
+                })            
             
-            print(f"查詢紀錄成功: 找到 {len(formatted_logs)} 筆記錄")
             return {"data": formatted_logs}
         else:
             print(f"查詢紀錄: 無記錄")
@@ -215,10 +209,8 @@ async def get_member_api(request: Request, member_id: int):
                     "INSERT INTO querylogs (queried_id, querier_id) VALUES (%s, %s)",
                     (member_id, querier_id)
                 )
-                con.commit()
-                print(f"查詢紀錄已記錄: 會員 {querier_id} 查詢了會員 {member_id}")
+                con.commit()                       
             
-            print(f"查詢成功: {member['name']} (ID: {member_id})")
             return {
                 "data": {
                     "id": member["id"],
@@ -303,8 +295,7 @@ async def login(
             request.session["LOGGED-IN"] = True
             request.session["member_id"] = member["id"]
             request.session["member_name"] = member["name"]
-            request.session["member_email"] = member["email"]
-            print(f"登入成功: {member['name']} (ID: {member['id']})")
+            request.session["member_email"] = member["email"]            
             return RedirectResponse(url="/member", status_code=303)
         else:
             print(f"登入失敗: {email}")
@@ -320,6 +311,5 @@ async def login(
 @app.get("/logout")
 async def logout(request: Request):
     member_name = request.session.get("member_name", "Unknown")
-    request.session.clear()
-    print(f"登出成功: {member_name}")
+    request.session.clear()    
     return RedirectResponse(url="/", status_code=303)
