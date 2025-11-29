@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員系統 - 會員頁面</title>
+    <link href="{{ url_for('static', path='/styles-success.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="welcome">歡迎光臨，這是會員頁</div>
+    
+    <div class="container">
+        <div class="title">
+            <span class="member-name" id="displayName">{{ member_name }}</span>，歡迎登入系統
+        </div>
+        <div class="logout">
+            <a href="/logout">登出系統</a>
+        </div>        
+        <div class="query-title">查詢會員姓名</div>
+        <div class="query-group">
+            <input type="text" id="memberId" required>
+            <button onclick="memberquery();">查詢</button>
+        </div>
+        <div id="queryResult"></div>        
+        <div class="update-title">更新我的姓名</div>
+        <div class="update-group">
+            <input type="text" id="newName" required>
+            <button onclick="updateName();">更新</button>
+        </div>
+        <div id="updateResult"></div>        
+        <div class="querylog-title">誰查詢了我</div>
+        <div class="querylog-group">
+            <button onclick="getQueryLogs();">更新</button>
+        </div>
+        <div id="querylogResult"></div>
+    </div>
+
+    <script>
+        // 查詢會員功能
+        async function memberquery() {
+            const memberId = document.getElementById('memberId').value.trim();
+            const resultDiv = document.getElementById('queryResult');
+            
+            // 清除結果
+            resultDiv.textContent = '';           
+                        
+            try {
+                const response = await fetch(`/api/member/${memberId}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP Error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.data) {
+                    // 顯示:姓名 (email)
+                    resultDiv.textContent = `${data.data.name} (${data.data.email})`;
+                } else {
+                    resultDiv.textContent = '無此會員';
+                }
+                
+            } catch (error) {
+                console.error('查詢錯誤:', error);
+                resultDiv.textContent = '查詢失敗';
+            }
+        }
+        
+        // 更新姓名功能
+        async function updateName() {
+            const newName = document.getElementById('newName').value.trim();
+            const resultDiv = document.getElementById('updateResult');
+            const displayNameSpan = document.getElementById('displayName');            
+            
+            resultDiv.textContent = ''; // 清除結果       
+                        
+            try {
+                
+                const response = await fetch('/api/member', {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: newName
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP Error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.ok) {                    
+                    resultDiv.textContent = '更新成功';                    
+                    displayNameSpan.textContent = newName;  // 更新頁面上顯示的姓名                    
+                    document.getElementById('newName').value = ''; // 清空輸入框
+                    console.log('姓名更新成功:', newName);
+                } else if (data.error) {                    
+                    resultDiv.textContent = '更新失敗';
+                    console.log('姓名更新失敗');
+                }
+                
+            } catch (error) {
+                console.error('更新錯誤:', error);
+                resultDiv.textContent = '更新失敗';
+            }
+        }
+        
+        // 取得查詢紀錄功能
+        async function getQueryLogs() {
+            const resultDiv = document.getElementById('querylogResult');           
+            
+            resultDiv.innerHTML = ''; // 清除結果
+            
+            try {                
+                const response = await fetch('/api/member/querylogs', {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP Error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.data && data.data.length > 0) {
+                    // 有查詢記錄:顯示列表
+                    let logsHTML = '';
+                    data.data.forEach(log => {
+                        logsHTML += `
+                            <div class="log-item">
+                                <span class="log-name">${log.name}</span>
+                                <span class="log-time">(${log.time})</span>
+                            </div>
+                        `;
+                    });
+                    resultDiv.innerHTML = logsHTML;
+                    console.log('查詢日誌成功:', data.data.length, '筆記錄');
+                } else {
+                    // 沒有查詢記錄
+                    resultDiv.innerHTML = '<div class="no-logs">目前沒有查詢記錄</div>';
+                    console.log('查詢日誌: 無記錄');
+                }
+                
+            } catch (error) {
+                console.error('取得查詢日誌錯誤:', error);
+                resultDiv.innerHTML = '<div class="no-logs">取得查詢日誌失敗</div>';
+            }
+        }
+        
+        // 支援Enter鍵
+        document.getElementById('memberId').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                memberquery();
+            }
+        });
+        
+        document.getElementById('newName').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                updateName();
+            }
+        });     
+    </script>
+</body>
+</html>

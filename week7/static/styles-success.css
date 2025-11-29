@@ -1,0 +1,125 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, "微軟正黑體", sans-serif;
+    background-color: white;
+}
+
+
+.container {
+    max-width: 360px;          
+    margin: 40px auto;
+    padding: 20px 0;
+}
+
+.welcome {
+    background-color: #2c5472;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.member-name {
+    color: #000;
+}
+
+.logout {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logout a {
+    color: #2c5472;
+    text-decoration: underline;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.logout a:hover {
+    color: #1a3a4f;
+}
+
+.query-title,
+.update-title,
+.querylog-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0 15px 0;
+    text-align: center;
+}
+
+.query-group,
+.update-group,
+.querylog-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.query-group input,
+.update-group input {
+    width: 200px;              
+    padding: 6px 8px;
+    border: 1px solid #999;
+    border-radius: 0;
+    font-size: 16px;
+}
+
+.query-group button,
+.update-group button,
+.querylog-group button {
+    padding: 6px 14px;
+    background-color: #f5f5f5;
+    border: 1px solid #999;
+    border-radius: 0;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.query-group button:hover,
+.update-group button:hover,
+.querylog-group button:hover {
+    background-color: #e0e0e0;
+}
+
+#queryResult,
+#updateResult {
+    margin-top: 10px;
+    min-height: 20px;
+    font-size: 16px;
+    text-align: center;
+}
+
+#querylogResult {
+    margin-top: 10px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.log-item {
+    padding: 4px 0;
+}
+
+.log-name {
+    font-weight: bold;
+    color: #000;
+}
+
+.log-time {
+    font-size: 16px;
+}
+
