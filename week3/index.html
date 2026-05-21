@@ -70,55 +70,7 @@
         function closeMenu() {
             document.getElementById('mobileMenu').classList.remove('active');
         }
-        function getData() {
-            const url1 = "https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment-1";
-            // 捷運資料，若目前不需要可以先放著不影響
-            const url2 = "https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment-2";
-        
-            Promise.all([
-                fetch(url1).then(response => response.json()),
-                fetch(url2).then(response => response.json())
-            ]).then(function (results) {
-                // 💡 修正 1 (增加容錯)：加上 ?. 防護網，無論 API 將陣列包在 data 還是 result 底下都能順利讀取
-                let data1 = results[0].data?.results || results[0].result?.results || [];
-        
-                let allAttractions = data1.map(attraction => {
-                    // 💡 修正 2 (最關鍵)：API 存放圖片網址的屬性名稱是 'file'，不是 'filelist'！
-                    let fileString = attraction.file || ""; 
-                    let imagesArray = [];
-        
-                    if (fileString) {
-                        // 這個正則寫得很棒，能完美避開 .mp3/.flv 等非圖片格式
-                        const regex = /https?:\/\/.*?\.(?:jpg|jpeg|png|gif)/gi;
-                        let matches = fileString.match(regex);
-                        if (matches) {
-                            imagesArray = matches; 
-                        }
-                    }
-        
-                    return {
-                        name: attraction.stitle || "未提供名稱", 
-                        serial: attraction._id,
-                        images: imagesArray
-                    };
-                });
-                
-        // 取得前 3 個景點放在 bars
-                let barsAttractions = allAttractions.slice(0, 3);
-                // 取得第 4-13 個景點放在 content blocks
-                let contentAttractions = allAttractions.slice(3, 13);
-        
-                // 執行畫面渲染
-                renderDesktopBars(barsAttractions);
-                renderTabletBars(barsAttractions);
-                renderContentBlocks(contentAttractions);
-        
-            }).catch(function (error) {
-                console.error('取得或解析資料時發生錯誤:', error);
-            });
-        }
-        
-        <!--
+            
         function getData() {
             const url1 = "https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment-1";
             const url2 = "https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment-2";
@@ -167,7 +119,7 @@
                 console.error('取得或解析資料時發生錯誤:', error);
             });
         }               
-        -->
+        
         // 渲染桌面版bars
         function renderDesktopBars(attractions) {
             let desktopBars = document.getElementById('desktopBars');        
