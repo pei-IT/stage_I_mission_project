@@ -84,7 +84,7 @@
 
                 let allAttractions = data1.map(attraction => {
                     // 1. 關鍵修正：圖片網址是放在 filelist 屬性中
-                    let fileString = attraction.filelist || "";
+                    let fileString = attraction.file || "";
                     let imagesArray = [];
 
                     if (fileString) {
