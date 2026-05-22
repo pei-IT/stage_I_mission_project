@@ -70,104 +70,54 @@
         function closeMenu() {
             document.getElementById('mobileMenu').classList.remove('active');
         }
+
         function getData() {
             const url1 = "https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment-1";
-            const url2 = "https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment-2";
         
-            Promise.all([
-                fetch(url1).then(response => response.json()),
-                fetch(url2).then(response => response.json())
-            ]).then(function (results) {
-                // 從新版 API 的 data.results 取出景點陣列
-                let data1 = results[0].data.results || [];
+            // 直接 fetch 單一 API，不需要 Promise.all
+            fetch(url1)
+                .then(response => response.json())
+                .then(function (result) {
+                    // 從 API 回傳的 JSON 結構中取出 data.results 陣列
+                    let data1 = result.data.results || [];
         
-                let allAttractions = data1.map(attraction => {
-                    // 1. 【關鍵修正】將 attraction.file 改為 attraction.filelist
-                    let fileString = attraction.filelist || "";
-                    let firstImage = ""; // 用來儲存第一張圖片的網址
+                    let allAttractions = data1.map(attraction => {
+                        // 1. 從 filelist 取出字串
+                        let fileString = attraction.filelist || "";
+                        let firstImage = ""; // 用來儲存第一張圖片的網址
         
-                    if (fileString) {
-                        // 2. 使用正規表達式擷取所有圖片網址
-                        const regex = /https?:\/\/.*?\.(?:jpg|jpeg|png|gif)/gi;
-                        let matches = fileString.match(regex);
-                        if (matches && matches.length > 0) {
-                            // 3. 【關鍵修正】取出第一張圖片的網址字串，供前端渲染使用
-                            firstImage = matches[0]; 
+                        if (fileString) {
+                            // 2. 使用正規表達式擷取所有圖片網址
+                            const regex = /https?:\/\/.*?\.(?:jpg|jpeg|png|gif)/gi;
+                            let matches = fileString.match(regex);
+                            
+                            if (matches && matches.length > 0) {
+                                // 3. 取出第一張圖片的網址字串
+                                firstImage = matches[0]; 
+                            }
                         }
-                    }
         
-                    return {
-                        name: attraction.stitle || "未提供名稱", 
-                        serial: attraction.SERIAL_NO, // 建議使用 SERIAL_NO，便於日後與 url2 資料串接
-                        images: firstImage // 這裡傳遞單一網址字串
-                    };
+                        return {
+                            name: attraction.stitle || "未提供名稱", 
+                            serial: attraction.SERIAL_NO, 
+                            images: firstImage 
+                        };
+                    });
+        
+                    // 取得前 3 個景點放在 bars
+                    let barsAttractions = allAttractions.slice(0, 3);
+                    // 取得第 4-13 個景點放在 content blocks
+                    let contentAttractions = allAttractions.slice(3, 13);
+        
+                    // 執行畫面渲染
+                    renderDesktopBars(barsAttractions);
+                    renderTabletBars(barsAttractions);
+                    renderContentBlocks(contentAttractions);
+        
+                }).catch(function (error) {
+                    console.error('取得或解析資料時發生錯誤:', error);
                 });
-        
-                // 取得前 3 個景點放在 bars
-                let barsAttractions = allAttractions.slice(0, 3);
-                // 取得第 4-13 個景點放在 content blocks
-                let contentAttractions = allAttractions.slice(3, 13);
-        
-                // 執行畫面渲染
-                renderDesktopBars(barsAttractions);
-                renderTabletBars(barsAttractions);
-                renderContentBlocks(contentAttractions);
-        
-            }).catch(function (error) {
-                console.error('取得或解析資料時發生錯誤:', error);
-            });
-        }
-                
-        /*    
-        function getData() {
-            const url1 = "https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment-1";
-            const url2 = "https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment-2";
-
-            Promise.all([
-                fetch(url1).then(response => response.json()),
-                fetch(url2).then(response => response.json())
-            ]).then(function (results) {
-                // 從新版 API 的 data.results 取出景點陣列
-                let data1 = results[0].data.results || [];
-
-                let allAttractions = data1.map(attraction => {
-                    // 1. 關鍵修正：圖片網址是放在 filelist 屬性中
-                    let fileString = attraction.file || "";
-                    let imagesArray = [];
-
-                    if (fileString) {
-                        // 2. 使用正規表達式擷取圖片
-                        // 這個寫法會自動抓出 .jpg, .jpeg, .png, .gif，並完美避開 .mp3 或 .flv 檔案
-                        const regex = /https?:\/\/.*?\.(?:jpg|jpeg|png|gif)/gi;
-                        let matches = fileString.match(regex);
-                        if (matches) {
-                            imagesArray = matches; 
-                        }
-                    }
-
-                    return {
-                        // 3. 確保對應正確的標題屬性 stitle
-                        name: attraction.stitle || "未提供名稱", 
-                        serial: attraction._id, // JSON 中有提供 _id
-                        images: imagesArray
-                    };
-                });
-
-                // 取得前 3 個景點放在 bars
-                let barsAttractions = allAttractions.slice(0, 3);
-                // 取得第 4-13 個景點放在 content blocks
-                let contentAttractions = allAttractions.slice(3, 13);
-
-                // 執行畫面渲染
-                renderDesktopBars(barsAttractions);
-                renderTabletBars(barsAttractions);
-                renderContentBlocks(contentAttractions);
-
-            }).catch(function (error) {
-                console.error('取得或解析資料時發生錯誤:', error);
-            });
-        }               
-        */
+        }        
         
         // 渲染桌面版bars
         function renderDesktopBars(attractions) {
