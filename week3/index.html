@@ -183,7 +183,7 @@
             let img = document.createElement('img');
             // 取得第一張圖片的URL
             if (attraction.images && attraction.images.length > 0) {
-                img.src = attraction.images[0];
+                img.src = attraction.images;                
             } else {
                 img.src = 'view.jpg';
             }
