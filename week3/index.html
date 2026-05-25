@@ -192,6 +192,12 @@
                 } else {
                     img.src = 'view.jpg';
                 }
+
+                // ✨ 加入這段：如果圖片因為任何原因(包含阻擋或網址失效)載入失敗，就換成預設圖片
+                img.onerror = function() {
+                    this.onerror = null; // 將 onerror 設為 null，避免 view.jpg 也找不到時陷入無限迴圈
+                    this.src = 'view.jpg';
+                };
                 
                 img.alt = attraction.name || 'Attraction';            
                 let barText = document.createElement('div');
@@ -225,6 +231,11 @@
                 } else {
                     img.src = 'view.jpg';
                 }
+
+                img.onerror = function() {
+                    this.onerror = null; // 將 onerror 設為 null，避免 view.jpg 也找不到時陷入無限迴圈
+                    this.src = 'view.jpg';
+                };
                 
                 img.alt = attraction.name || 'Attraction';
                 // 建立星星圖示
